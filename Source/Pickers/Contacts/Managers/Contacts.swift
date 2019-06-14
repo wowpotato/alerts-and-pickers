@@ -111,7 +111,10 @@ public struct Contacts {
                 // Ordering contacts based on alphabets in firstname
                 var key: String = "#"
                 // If ordering has to be happening via family name change it here.
-                let firstLetter = contact.givenName[0..<1]
+
+                guard let first = contact.givenName.first else { return }
+                
+                let firstLetter = String(first)
                 if firstLetter.containsAlphabets {
                     key = firstLetter.uppercased()
                 }
@@ -169,7 +172,7 @@ public struct Contacts {
         var contacts: [CNContact] = [CNContact]()
         let predicate: NSPredicate
 
-        if string.endIndex.encodedOffset > 0 {
+        if string.endIndex.utf16Offset(in: "") > 0 {
             predicate = CNContact.predicateForContacts(matchingName: string)
         } else {
             predicate = CNContact.predicateForContactsInContainer(withIdentifier: CNContactStore().defaultContainerIdentifier())

@@ -11,7 +11,7 @@ extension UIAlertController {
     ///   - maximumDate: maximum date of date picker
     ///   - action: an action for datePicker value change
     
-    func addDatePicker(mode: UIDatePickerMode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
+    func addDatePicker(mode: UIDatePicker.Mode, date: Date?, minimumDate: Date? = nil, maximumDate: Date? = nil, action: DatePickerViewController.Action?) {
         let datePicker = DatePickerViewController(mode: mode, date: date, minimumDate: minimumDate, maximumDate: maximumDate, action: action)
         set(vc: datePicker, height: 217)
     }
@@ -28,7 +28,7 @@ final class DatePickerViewController: UIViewController {
         return $0
     }(UIDatePicker())
     
-    required init(mode: UIDatePickerMode, date: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil, action: Action?) {
+    required init(mode: UIDatePicker.Mode, date: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil, action: Action?) {
         super.init(nibName: nil, bundle: nil)
         datePicker.datePickerMode = mode
         datePicker.date = date ?? Date()
@@ -55,5 +55,26 @@ final class DatePickerViewController: UIViewController {
     
     public func setDate(_ date: Date) {
         datePicker.setDate(date, animated: true)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 217)
+        heightConstraint.identifier = "height"
+        heightConstraint.isActive = true
+        
+        let widthConstraint = view.widthAnchor.constraint(equalToConstant: 375)
+        widthConstraint.identifier = "width"
+        widthConstraint.isActive = true
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            preferredContentSize.width = 375
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        preferredContentSize.height = 217
     }
 }
