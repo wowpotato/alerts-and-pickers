@@ -161,7 +161,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("show")
         title = "Alerts & Pickers"
         
         navigationController?.navigationBar.backgroundColor = .white
